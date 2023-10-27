@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Monkey Apes | Edit Credit Card</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+        <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Inconsolata&amp;family=Open+Sans&amp;display=swap'><link rel="stylesheet" href="./creditcard/style.css">
+    </head>
+
+    <body>
+    <?php
+        include("header.php");
+        include("connect.php");
+
+        // Check if the user is logged in and has a cust_id set in their session
+        if (!isset($_SESSION['cust_id'])) {
+            // Redirect to login or handle unauthorized access
+            header("Location: loginregister.php");
+            exit();
+        }
+
+        $cust_id = $_SESSION['cust_id']; // Get the cust_id from the session
+
+        // Retrieve the user's credit card information
+        $sql = "SELECT card_id, card_number, card_holder, expiration_month, expiration_year, cvv FROM creditcards WHERE user = ?";
+        $stmt = mysqli_prepare($db, $sql);
+        mysqli_stmt_bind_param($stmt, "i", $cust_id);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_bind_result($stmt, $card_id, $card_number, $card_holder, $expiration_month, $expiration_year, $cvv);
+        mysqli_stmt_fetch($stmt);
+        mysqli_stmt_close($stmt);
+
+        if (isset($_POST['update'])) {
+            // Validate and sanitize user input (you can add more validation as needed)
+            $card_number = mysqli_real_escape_string($db, $_POST['card-number']);
+            $card_holder = mysqli_real_escape_string($db, $_POST['card-holder']);
+            $expiration_month = mysqli_real_escape_string($db, $_POST['card-expiration-month']);
+            $expiration_year = mysqli_real_escape_string($db, $_POST['card-expiration-year']);
+            $cvv = mysqli_real_escape_string($db, $_POST['card-ccv']);
+
+            // Perform the update using prepared statement
+            $sql = "UPDATE creditcards SET card_number=?, card_holder=?, expiration_month=?, expiration_year=?, cvv=? WHERE card_id=?";
+            $stmt = mysqli_prepare($db, $sql);
+            mysqli_stmt_bind_param($stmt, "sssssi", $card_number, $card_holder, $expiration_month, $expiration_year, $cvv, $card_id);
+
+            if (mysqli_stmt_execute($stmt)) {
+                $message = 'Credit Card Info Updated Successfully';
+                echo "<script>
+                        window.location.href='userprofile.php';
+                </script>";
+            } else {
+                $message = 'Error: ' . mysqli_error($db);
+                echo "<script>
+                    window.location.href='404.php';
+                </script>";
+            }
+            mysqli_stmt_close($stmt);
+        }
+    ?>
+            
+        <div class="checkout">
+            <div class="credit-card-box">
+                <div class="flip">
+                    <div class="front">
+                        <div class="chip"></div>
+                            <div class="logo">
+                            <svg version="1.1" id="visa" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                width="47.834px" height="47.834px" viewBox="0 0 47.834 47.834" style="enable-background:new 0 0 47.834 47.834;">
+                                <g>
+                                    <g>
+                                        <path d="M44.688,16.814h-3.004c-0.933,0-1.627,0.254-2.037,1.184l-5.773,13.074h4.083c0,0,0.666-1.758,0.817-2.143
+                                                c0.447,0,4.414,0.006,4.979,0.006c0.116,0.498,0.474,2.137,0.474,2.137h3.607L44.688,16.814z M39.893,26.01
+                                                c0.32-0.819,1.549-3.987,1.549-3.987c-0.021,0.039,0.317-0.825,0.518-1.362l0.262,1.23c0,0,0.745,3.406,0.901,4.119H39.893z
+                                                M34.146,26.404c-0.028,2.963-2.684,4.875-6.771,4.875c-1.743-0.018-3.422-0.361-4.332-0.76l0.547-3.193l0.501,0.228
+                                                c1.277,0.532,2.104,0.747,3.661,0.747c1.117,0,2.313-0.438,2.325-1.393c0.007-0.625-0.501-1.07-2.016-1.77
+                                                c-1.476-0.683-3.43-1.827-3.405-3.876c0.021-2.773,2.729-4.708,6.571-4.708c1.506,0,2.713,0.31,3.483,0.599l-0.526,3.092
+                                                l-0.351-0.165c-0.716-0.288-1.638-0.566-2.91-0.546c-1.522,0-2.228,0.634-2.228,1.227c-0.008,0.668,0.824,1.108,2.184,1.77
+                                                C33.126,23.546,34.163,24.783,34.146,26.404z M0,16.962l0.05-0.286h6.028c0.813,0.031,1.468,0.29,1.694,1.159l1.311,6.304
+                                                C7.795,20.842,4.691,18.099,0,16.962z M17.581,16.812l-6.123,14.239l-4.114,0.007L3.862,19.161
+                                                c2.503,1.602,4.635,4.144,5.386,5.914l0.406,1.469l3.808-9.729L17.581,16.812L17.581,16.812z M19.153,16.8h3.89L20.61,31.066
+                                                h-3.888L19.153,16.8z"/>
+                                    </g>
+                                </g>
+                            </svg>
+                            </div>
+                            <div class="number"></div>
+                            <div class="card-holder">
+                                <label>Card holder</label>
+                            <div></div>
+                        </div>
+
+                        <div class="card-expiration-date">
+                            <label>Expires</label>
+                            <div></div>
+                        </div>
+                    </div>
+                    <div class="back">
+                        <div class="strip"></div>
+                        <div class="logo">
+                            <svg version="1.1" id="visa" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                width="47.834px" height="47.834px" viewBox="0 0 47.834 47.834" style="enable-background:new 0 0 47.834 47.834;">
+                                <g>
+                                    <g>
+                                        <path d="M44.688,16.814h-3.004c-0.933,0-1.627,0.254-2.037,1.184l-5.773,13.074h4.083c0,0,0.666-1.758,0.817-2.143
+                                                c0.447,0,4.414,0.006,4.979,0.006c0.116,0.498,0.474,2.137,0.474,2.137h3.607L44.688,16.814z M39.893,26.01
+                                                c0.32-0.819,1.549-3.987,1.549-3.987c-0.021,0.039,0.317-0.825,0.518-1.362l0.262,1.23c0,0,0.745,3.406,0.901,4.119H39.893z
+                                                M34.146,26.404c-0.028,2.963-2.684,4.875-6.771,4.875c-1.743-0.018-3.422-0.361-4.332-0.76l0.547-3.193l0.501,0.228
+                                                c1.277,0.532,2.104,0.747,3.661,0.747c1.117,0,2.313-0.438,2.325-1.393c0.007-0.625-0.501-1.07-2.016-1.77
+                                                c-1.476-0.683-3.43-1.827-3.405-3.876c0.021-2.773,2.729-4.708,6.571-4.708c1.506,0,2.713,0.31,3.483,0.599l-0.526,3.092
+                                                l-0.351-0.165c-0.716-0.288-1.638-0.566-2.91-0.546c-1.522,0-2.228,0.634-2.228,1.227c-0.008,0.668,0.824,1.108,2.184,1.77
+                                                C33.126,23.546,34.163,24.783,34.146,26.404z M0,16.962l0.05-0.286h6.028c0.813,0.031,1.468,0.29,1.694,1.159l1.311,6.304
+                                                C7.795,20.842,4.691,18.099,0,16.962z M17.581,16.812l-6.123,14.239l-4.114,0.007L3.862,19.161
+                                                c2.503,1.602,4.635,4.144,5.386,5.914l0.406,1.469l3.808-9.729L17.581,16.812L17.581,16.812z M19.153,16.8h3.89L20.61,31.066
+                                                h-3.888L19.153,16.8z"/>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="ccv">
+                            <label>CCV</label>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <?php
+                if(isset($message)){
+                    foreach($message as $message){
+                        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fa-solid fa-check"></i> '.$message.'
+                        </div>';
+                    }
+                }
+            ?>
+            
+            <!-- Credit card input form -->
+            <form class="form" autocomplete="off" novalidate method="post" action="editcreditcard.php">
+                <fieldset>
+                    <label for="card-number">Card Number</label>
+                    <input type="text" id="card-number" class="input-cart-number" name="card-number" value="<?php echo $card_number; ?>" maxlength="16" />
+                </fieldset>
+
+                <fieldset>
+                    <label for="card-holder">Card Holder</label>
+                    <input type="text" id="card-holder" value="<?php echo $card_holder; ?>" name="card-holder" />
+                </fieldset>
+                <fieldset class="fieldset-expiration">
+                    <label for="card-expiration-month">Expiration Date</label>
+                    <div class="select">
+                        <select id="card-expiration-month" name="card-expiration-month" value="<?php echo $expiration_month; ?>">
+                            <option><?php echo $expiration_month; ?></option>
+                            <option>01</option>
+                            <option>02</option>
+                            <option>03</option>
+                            <option>04</option>
+                            <option>05</option>
+                            <option>06</option>
+                            <option>07</option>
+                            <option>08</option>
+                            <option>09</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option>12</option>
+                        </select>
+                    </div>
+
+                    <div class="select">
+                        <select id="card-expiration-year" name="card-expiration-year" value="<?php echo $expiration_year; ?>">
+                            <option><?php echo $expiration_year; ?></option>
+                            <option>2023</option>
+                            <option>2024</option>
+                            <option>2025</option>
+                            <option>2026</option>
+                            <option>2027</option>
+                            <option>2028</option>
+                            <option>2029</option>
+                            <option>2030</option>
+                        </select>
+                    </div>
+                </fieldset>
+
+                <fieldset class="fieldset-ccv">
+                    <label for="card-ccv">CCV</label>
+                    <input type="text" id="card-ccv" name="card-ccv" value="<?php echo $cvv; ?>" maxlength="3" />
+                </fieldset>
+
+                <button type="submit" name="update">Update Credit Card</button>
+            </form>
+        </div>
+
+        <!-- Footer Section Begin -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="footer__about">
+                            <div class="footer__logo">
+                                <a href="./index.php"><img src="img/logo.png" alt=""></a>
+                            </div>
+                            <p>The customer is at the heart of our unique business model, which includes design.</p>
+                            <a href="./shopping-cart.php"><img src="img/payment.png" alt=""></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                        <div class="footer__widget">
+                            <h6>Shopping</h6>
+                            <ul>
+                                <li><a href="#">Clothing Store</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-sm-6">
+                        <div class="footer__widget">
+                            <h6>Shopping</h6>
+                            <ul>
+                                <li><a href="./contact.php">Contact Us</a></li>
+                                <li><a href="./payment.php">Payment Methods</a></li>
+                                <li><a href="./cookienotice.php">Cookie Notice</a></li>
+                                <li><a href="./shipping & returns.php">Return & Exchanges</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+                        <div class="footer__widget">
+                            <h6>NewLetter</h6>
+                            <div class="footer__newslatter">
+                                <p>Be the first to know about new arrivals, look books, sales & promos!</p>
+                                <form action="#">
+                                    <input type="text" placeholder="Your email">
+                                    <button type="submit"><span class="icon_mail_alt"></span></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Footer Section End -->
+
+    <!-- partial -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script><script  src="./creditcard/script.js"></script>
+
+    </body>
+</html>
