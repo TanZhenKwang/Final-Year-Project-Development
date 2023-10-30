@@ -93,7 +93,7 @@
                             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
                             // Add a User-Agent header
-                            $userAgent = 'YourAppName/1.0'; // Replace 'YourAppName' with the name of your application
+                            $userAgent = 'MonkeyApes/1.0'; // Replace 'YourAppName' with the name of your application
                             curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
 
                             $newsApiResponse = curl_exec($ch);

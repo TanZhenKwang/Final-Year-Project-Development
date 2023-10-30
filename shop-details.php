@@ -6,7 +6,7 @@
     if (isset($_SESSION['cust_id'])) {
         $cust_id = $_SESSION['cust_id'];
     } else {
-        echo '<div class="alert alert-warning" role="alert">Please log in to add items to your cart.</div>';
+        echo '<div class="alert alert-warning" role="alert">Please log in to search products.</div>';
         exit; // Stop script execution
     }
 
