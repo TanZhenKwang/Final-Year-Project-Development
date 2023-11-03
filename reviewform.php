@@ -37,7 +37,10 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>CodePen - Star &amp; feedback form</title>
+
+  <!-- Favicons -->
+  <link href="./img/icons.png" rel="icon">
+  <title>Monkey Apes | Review Form</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="./style.css">
 
@@ -239,7 +242,7 @@
                     <div class="breadcrumb__text">
                         <h4>Ratings</h4>
                         <div class="breadcrumb__links">
-                            <a href="./index.html">Home</a>
+                            <a href="./index.php">Home</a>
                             <span>Ratings</span>
                         </div>
                     </div>

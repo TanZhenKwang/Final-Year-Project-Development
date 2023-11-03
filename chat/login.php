@@ -26,6 +26,7 @@
         </div>
       </form>
       <div class="link">Not yet signed up? <a href="index.php">Signup now</a></div>
+      <div class="link"><a href="./forget-password-chat.php" id="forgotPasswordLink">Forget Password!</a></div>
       <div class="link"><a href="../index.php">Return to Monkey Apes</a></div>
     </section>
   </div>

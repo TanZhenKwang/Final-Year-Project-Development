@@ -6,7 +6,7 @@
     if (isset($_SESSION['cust_id'])) {
         $cust_id = $_SESSION['cust_id'];
     } else {
-        echo '<div class="alert alert-warning" role="alert">Please log in to add items to your cart.</div>';
+        echo '<div class="alert alert-warning" role="alert">Please log in to search products.</div>';
         exit; // Stop script execution
     }
 
@@ -17,10 +17,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Male_Fashion Template">
-    <meta name="keywords" content="Male_Fashion, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- Favicons -->
+    <link href="./img/icons.png" rel="icon">
     <title>Monkey Apes | Shop Details</title>
 
     <!-- Google Font -->

@@ -2,6 +2,9 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+
+        <!-- Favicons -->
+        <link href="./img/icons.png" rel="icon">
         <title>Monkey Apes | Edit Credit Card</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
         <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Inconsolata&amp;family=Open+Sans&amp;display=swap'><link rel="stylesheet" href="./creditcard/style.css">
@@ -36,27 +39,45 @@
             $card_holder = mysqli_real_escape_string($db, $_POST['card-holder']);
             $expiration_month = mysqli_real_escape_string($db, $_POST['card-expiration-month']);
             $expiration_year = mysqli_real_escape_string($db, $_POST['card-expiration-year']);
-            $cvv = mysqli_real_escape_string($db, $_POST['card-ccv']);
+            $cvv = mysqli_real_escape_string($db, $_POST['card-cvv']);
 
-            // Perform the update using prepared statement
-            $sql = "UPDATE creditcards SET card_number=?, card_holder=?, expiration_month=?, expiration_year=?, cvv=? WHERE card_id=?";
-            $stmt = mysqli_prepare($db, $sql);
-            mysqli_stmt_bind_param($stmt, "sssssi", $card_number, $card_holder, $expiration_month, $expiration_year, $cvv, $card_id);
+            $cvvHash = password_hash($cvv, PASSWORD_BCRYPT);
 
-            if (mysqli_stmt_execute($stmt)) {
-                $message = 'Credit Card Info Updated Successfully';
-                echo "<script>
-                        window.location.href='userprofile.php';
-                </script>";
+            // Validate card number: should not contain alphabetic characters
+            if (!preg_match('/[a-zA-Z]/', $card_number)) {
+                // Validate card holder: should contain only alphabetic characters
+                if (preg_match('/^[a-zA-Z]+$/', $card_holder)) {
+                    // Validate CVV: should contain only numeric digits
+                    if (ctype_digit($cvv)) {
+                        // Perform the update using a prepared statement
+                        $sql = "UPDATE creditcards SET card_number=?, card_holder=?, expiration_month=?, expiration_year=?, cvv=? WHERE card_id=?";
+                        $stmt = mysqli_prepare($db, $sql);
+                        mysqli_stmt_bind_param($stmt, "sssssi", $card_number, $card_holder, $expiration_month, $expiration_year, $cvvHash, $card_id);
+
+                        if (mysqli_stmt_execute($stmt)) {
+                            $message = 'Credit Card Info Updated Successfully';
+                            echo "<script>
+                                    window.location.href='userprofile.php';
+                            </script>";
+                        } else {
+                            $message = 'Error: ' . mysqli_error($db);
+                            echo "<script>
+                                window.location.href='404.php';
+                            </script>";
+                        }
+                        mysqli_stmt_close($stmt);
+                    } else {
+                        $message = 'Invalid CVV format (should contain only numeric digits).';
+                    }
+                } else {
+                    $message = 'Invalid card holder name format (should contain only alphabetic characters).';
+                }
             } else {
-                $message = 'Error: ' . mysqli_error($db);
-                echo "<script>
-                    window.location.href='404.php';
-                </script>";
+                $message = 'Invalid card number format (should not contain alphabetic characters).';
             }
-            mysqli_stmt_close($stmt);
         }
     ?>
+
             
         <div class="checkout">
             <div class="credit-card-box">
@@ -125,14 +146,13 @@
             </div>
 
             <?php
-                if(isset($message)){
-                    foreach($message as $message){
-                        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <i class="fa-solid fa-check"></i> '.$message.'
+                if (isset($message)) {
+                    echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fa-solid fa-check"></i> ' . $message . '
                         </div>';
-                    }
                 }
             ?>
+
             
             <!-- Credit card input form -->
             <form class="form" autocomplete="off" novalidate method="post" action="editcreditcard.php">
@@ -182,7 +202,7 @@
 
                 <fieldset class="fieldset-ccv">
                     <label for="card-ccv">CCV</label>
-                    <input type="text" id="card-ccv" name="card-ccv" value="<?php echo $cvv; ?>" maxlength="3" />
+                    <input type="text" id="card-ccv" name="card-cvv" value="<?php echo $cvv; ?>" maxlength="3" />
                 </fieldset>
 
                 <button type="submit" name="update">Update Credit Card</button>

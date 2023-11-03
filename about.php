@@ -3,10 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Male_Fashion Template">
-    <meta name="keywords" content="Male_Fashion, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- Favicons -->
+    <link href="./img/icons.png" rel="icon">
     <title>Monkey Apes | About</title>
 
     <!-- Google Font -->
@@ -40,7 +41,7 @@
                     <div class="breadcrumb__text">
                         <h4>About Us</h4>
                         <div class="breadcrumb__links">
-                            <a href="./index.html">Home</a>
+                            <a href="./index.php">Home</a>
                             <span>About Us</span>
                         </div>
                     </div>

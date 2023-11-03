@@ -4,6 +4,10 @@
 
 <head>
     <meta charset="UTF-8">
+
+    <!-- Favicons -->
+    <link href="./img/icons.png" rel="icon">
+    <title>Monkey Apes | Login Register</title>
     <script src="https://kit.fontawesome.com/a84d485a7a.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
@@ -381,10 +385,10 @@
                 }
             
             //password validation
-        if (strlen($password) < 8 || !$number || !$upperCase || !$lowerCase || !$specialChars) {
-                    $passwordErr = "* Password must be at least 8 characters in length and must contain at least one number, one upper case letter, one lower case letter and one special character.". "<br>";
-                    $okay = false;
-        }
+            if (strlen($password) < 8 || !$number || !$upperCase || !$lowerCase || !$specialChars) {
+                        $passwordErr = "* Password must be at least 8 characters in length and must contain at least one number, one upper case letter, one lower case letter and one special character.". "<br>";
+                        $okay = false;
+            }
 
         if ($okay) {
             $query = "INSERT INTO user (cust_id, username, email, password, gender, dob, address, registration_date)
@@ -471,11 +475,11 @@
                     echo $addressErr;
                 ?>
 
-                <input type="text" name="username" placeholder="Username" />
-                <input type="email" name="email" placeholder="Email" />
-                <input type="text" name="password" placeholder="Password" />
-                <input type="date" name="dob" placeholder="Dob" />
-                <input type="text" name="address" placeholder="Address" />
+                <input type="text" name="username" placeholder="Username" require />
+                <input type="email" name="email" placeholder="Email" require />
+                <input type="text" name="password" placeholder="Password" require />
+                <input type="date" name="dob" placeholder="Dob" require />
+                <input type="text" name="address" placeholder="Address" require />
                 <br />
                 <div>
                     <input type="radio" class="btn-check" name="gender" id="option1" value="male" checked>

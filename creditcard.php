@@ -2,6 +2,9 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        
+        <!-- Favicons -->
+        <link href="./img/icons.png" rel="icon">
         <title>Monkey Apes | Credit Card</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
         <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Inconsolata&amp;family=Open+Sans&amp;display=swap'><link rel="stylesheet" href="./creditcard/style.css">
@@ -95,12 +98,12 @@
             <form class="form" autocomplete="off" novalidate method="post" action="creditcard-code.php">
                 <fieldset>
                     <label for="card-number">Card Number</label>
-                    <input type="text" id="card-number" class="input-cart-number" name="card-number" maxlength="16" />
+                    <input type="text" id="card-number" class="input-cart-number" name="card-number" maxlength="16" require />
                 </fieldset>
 
                 <fieldset>
                     <label for="card-holder">Card Holder</label>
-                    <input type="text" id="card-holder" name="card-holder" />
+                    <input type="text" id="card-holder" name="card-holder" require />
                 </fieldset>
                 <fieldset class="fieldset-expiration">
                     <label for="card-expiration-month">Expiration Date</label>
@@ -139,7 +142,7 @@
 
                 <fieldset class="fieldset-cvv">
                     <label for="card-cvv">CVV</label>
-                    <input type="text" id="card-cvv" name="card-cvv" maxlength="3" />
+                    <input type="text" id="card-cvv" name="card-cvv" maxlength="3" require />
                 </fieldset>
 
                 <button class="btn">Submit</button>

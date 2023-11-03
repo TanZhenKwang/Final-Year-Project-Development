@@ -39,10 +39,10 @@
     $product_id = $_REQUEST['product_id'];
 
     // Retrieve product information based on product_id
-    $result = mysqli_query($db, "SELECT product_id, product_image, product_title, product_desc, product_price, product_materialused, product_cat, product_brand, product_keywords, quantity FROM products WHERE product_id = '$product_id'") or die("Query is incorrect.....");
+    $result = mysqli_query($db, "SELECT product_id, product_image, product_title, product_desc, product_price, product_materialused, product_cat, product_brand, product_keywords FROM products WHERE product_id = '$product_id'") or die("Query is incorrect.....");
     
     if ($result && mysqli_num_rows($result) > 0) {
-        list($product_id, $product_image, $product_title, $product_desc, $product_price, $product_materialused, $product_cat, $product_brand, $product_keywords, $quantity) = mysqli_fetch_array($result);
+        list($product_id, $product_image, $product_title, $product_desc, $product_price, $product_materialused, $product_cat, $product_brand, $product_keywords) = mysqli_fetch_array($result);
     } else {
         // Handle the case where no product with the specified ID was found
         echo "<p>No product found with the given ID.</p>";
@@ -59,7 +59,6 @@
         $product_brand = $_POST['product_brand'];
         $product_keywords = $_POST['product_keywords'];
         $product_materialused = $_POST['product_materialused'];
-        $quantity = $_POST['quantity'];
         $size = $_POST['size'];
         $color = $_POST['color'];
         
@@ -78,12 +77,11 @@
         $product_keywords = mysqli_real_escape_string($db, $product_keywords);
         $picture = mysqli_real_escape_string($db, $picture);
         $product_materialused = mysqli_real_escape_string($db, $product_materialused);
-        $quantity = mysqli_real_escape_string($db, $quantity);
         $product_size = mysqli_real_escape_string($db, $product_size);
         $product_color = mysqli_real_escape_string($db, $product_color);
     
         // Construct the SQL query with proper syntax
-        $update = "UPDATE products SET product_image='$picture', product_title='$product_title', product_desc='$product_desc', product_materialused='$product_materialused' product_price='$product_price', product_cat='$product_cat', quantity='$quantity', product_brand='$product_brand', product_keywords='$product_keywords', product_size='$product_size', product_color='$product_color' WHERE product_id ='$product_id'";
+        $update = "UPDATE products SET product_image='$picture', product_title='$product_title', product_desc='$product_desc', product_materialused='$product_materialused' product_price='$product_price', product_cat='$product_cat', product_brand='$product_brand', product_keywords='$product_keywords', product_size='$product_size', product_color='$product_color' WHERE product_id ='$product_id'";
         
         if (mysqli_query($db, $update)) {
             $message = 'Product Info Updated Successfully';
@@ -163,10 +161,6 @@
                                     <input type="text" id="product_price" name="product_price" required class="form-control" value="<?php echo $product_price; ?>">
                                 </div>
                                 
-                                <div class="mb-3">
-                                    <label for="quantity" class="form-label">Quantity</label>
-                                    <input type="number" id="quantity" name="quantity" required="[1-6]" class="form-control" value="<?php echo $quantity; ?>">
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -184,14 +178,6 @@
                                     <label for="product_brand" class="form-label">Product Brand</label>
                                     <input type="number" id="product_brand" name="product_brand" required class="form-control" value="<?php echo $product_brand; ?>">
                                 </div>
-                                <div class="mb-3">
-                                        <label for="size" class="form-label">Product Size</label>
-                                        <input type="number" id="size" name="size" required="[1-6]" class="form-control" value="<?php echo $product_size; ?>">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="color" class="form-label">Product Color</label>
-                                        <input type="number" id="color" name="color" required="[1-6]" class="form-control" value="<?php echo $product_color; ?>">
-                                    </div>
                                 <div class="mb-3">
                                     <label for="product_keywords" class="form-label">Product Keywords</label>
                                     <input type="text" id="product_keywords" name="product_keywords" required class="form-control" value="<?php echo $product_keywords; ?>">
