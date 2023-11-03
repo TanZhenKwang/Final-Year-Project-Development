@@ -3,10 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Male_Fashion Template">
-    <meta name="keywords" content="Male_Fashion, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- Favicons -->
+    <link href="./img/icons.png" rel="icon">
     <title>Monkey Apes | Footer</title>
 
     <!-- Google Font -->
@@ -43,6 +44,7 @@
                         <h6>Shopping</h6>
                         <ul>
                             <li><a href="./shop.php">Clothing Store</a></li>
+                            <li><a href="./blog.php">Blog</a></li>
                         </ul>
                     </div>
                 </div>

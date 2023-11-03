@@ -179,14 +179,6 @@
                                     <input type="number" id="product_brand" name="product_brand" required class="form-control" value="<?php echo $product_brand; ?>">
                                 </div>
                                 <div class="mb-3">
-                                        <label for="size" class="form-label">Product Size</label>
-                                        <input type="number" id="size" name="size" required="[1-6]" class="form-control" value="<?php echo $product_size; ?>">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="color" class="form-label">Product Color</label>
-                                        <input type="number" id="color" name="color" required="[1-6]" class="form-control" value="<?php echo $product_color; ?>">
-                                    </div>
-                                <div class="mb-3">
                                     <label for="product_keywords" class="form-label">Product Keywords</label>
                                     <input type="text" id="product_keywords" name="product_keywords" required class="form-control" value="<?php echo $product_keywords; ?>">
                                 </div>

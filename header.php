@@ -8,10 +8,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Male_Fashion Template">
-    <meta name="keywords" content="Male_Fashion, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- Favicons -->
+    <link href="./img/icons.png" rel="icon">
     <title>Monkey Apes | Header</title>
 
     <!-- Google Font -->
@@ -45,6 +46,7 @@
                         <ul>
                             <li><a href="./index.php">Home</a></li>
                             <li><a href="./shop.php">Shop</a></li>
+                            <li><a href="./blog.php">Blog</a></li>
                             <li><a href="#">About</a>
                                 <ul class="dropdown">
                                     <li><a href="./about.php">About</a></li>
