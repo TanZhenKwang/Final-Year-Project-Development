@@ -215,56 +215,68 @@
               <!-- Line Chart -->
               <div id="reportsChart"></div>
               <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                  new ApexCharts(document.querySelector("#reportsChart"), {
-                    series: [{
-                      name: 'Sales',
-                      data: [<?php echo $totalQuantitySales; ?>],
-                  }, {
-                    name: 'Revenue',
-                    data: [<?php echo $totalRevenue; ?>],
-                                }, {
-                  name: 'Customers',
-                  data: [<?php echo $totalCustomers; ?>],
-                                }],
-                  chart: {
-                  height: 350,
-                  type: 'area',
-                  toolbar: {
-                    show: false
-                  },
-                },
-                  markers: {
-                  size: 4
-                },
-                  colors: ['#4154f1', '#2eca6a', '#ff771d'],
-                  fill: {
-                  type: "gradient",
-                  gradient: {
-                    shadeIntensity: 1,
-                    opacityFrom: 0.3,
-                    opacityTo: 0.4,
-                    stops: [0, 90, 100]
-                  }
-                },
-                  dataLabels: {
-                  enabled: false
-                },
-                  stroke: {
-                  curve: 'smooth',
-                  width: 2
-                },
-                  xaxis: {
-                  type: 'datetime',
-                  categories: ["2018-09-19T00:00:00.000Z"],
-                },
-                  tooltip: {
-                  x: {
-                    format: 'dd/MM/yy HH:mm'
-                  },
-                }
-                            }).render();
-                        });
+                  // Sample data (replace with your actual data)
+                  var chartData = [
+                      { x: '2023-01-01', y: 500, z: 100 },
+                      { x: '2023-01-02', y: 600, z: 150 },
+                      { x: '2023-01-03', y: 750, z: 200 },
+                      // Add more data points
+                  ];
+
+                  document.addEventListener("DOMContentLoaded", function () {
+                      new ApexCharts(document.querySelector("#reportsChart"), {
+                          series: [{
+                              name: 'Revenue',
+                              data: chartData.map(function (item) {
+                                  return { x: new Date(item.x), y: item.y };
+                              })
+                          }, {
+                              name: 'Sales',
+                              data: chartData.map(function (item) {
+                                  return { x: new Date(item.x), y: item.z };
+                              })
+                          }],
+                          chart: {
+                              height: 350,
+                              type: 'line',
+                              toolbar: {
+                                  show: false
+                              },
+                          },
+                          markers: {
+                              size: 4
+                          },
+                          colors: ['#2eca6a', '#ff771d'],
+                          xaxis: {
+                              type: 'datetime',
+                          },
+                          yaxis: [
+                              {
+                                  title: {
+                                      text: 'Revenue',
+                                  },
+                              },
+                              {
+                                  opposite: true,
+                                  title: {
+                                      text: 'Sales',
+                                  },
+                              },
+                          ],
+                          dataLabels: {
+                              enabled: false
+                          },
+                          stroke: {
+                              curve: 'smooth',
+                              width: 2
+                          },
+                          tooltip: {
+                              x: {
+                                  format: 'yyyy-MM-dd' // Update to match your date format
+                              },
+                          }
+                      }).render();
+                  });
               </script>
               <!-- End Line Chart -->
             </div>
