@@ -335,70 +335,64 @@
 
     $username = $email = $password = $gender = $dob = $address = "";
     $usernameErr = $emailErr = $passwordErr = $dobErr = $addressErr = $allErr = "";
+
     session_start();
-    if (isset($_POST['register'])) {
-  
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['register'])) {
+        // Sanitize and validate input data
         $username = ucwords(strtolower($_POST['username']));
         $email = $_POST['email'];
-        $password = $_POST['password'];
+        $rawPassword = $_POST['password'];
         $gender = $_POST['gender'];
         $dob = $_POST['dob'];
         $address = $_POST['address'];
 
-        $rawPassword = $_POST['password']; // Store the raw password temporarily
-        
-        // Hash the password
-        $password = password_hash($rawPassword, PASSWORD_BCRYPT);
-
-        //password validation
-        $number = preg_match('@[0-9]@', $password);
-        $upperCase = preg_match('@[A-Z]@', $password);
-        $lowerCase = preg_match('@[a-z]@', $password);
-        $specialChars = preg_match('@[^\w]@', $password);
-        
         $okay = true;
-        
-            //username validation
-            if (!ctype_alpha(str_replace(' ', '', $username))) {
-            $usernameErr = "* Only letters and spaces are allowed". "<br>";
+
+        // Username validation
+        if (!ctype_alpha(str_replace(' ', '', $username))) {
+            $usernameErr = "* Only letters and spaces are allowed" . "<br>";
             $okay = false;
+        }
+
+        // Email validation
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $emailErr = "* Invalid E-mail address";
+            $okay = false;
+        } else {
+            // Check if the email is already in use
+            $query = "SELECT * FROM user WHERE email = '$email'";
+            $result = mysqli_query($db, $query);
+
+            if ($result && mysqli_num_rows($result) == 1) {
+                $emailErr = "* Email address is already in use." . "<br>";
+                $okay = false;
+            } elseif (!$result) {
+                echo 'Error: ' . mysqli_error($db);
             }
-    
-            //email validation
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    $emailErr = "* Invalid E-mail address";
-                    $okay = false;
-                }
-            else {
-                    $query = "SELECT * FROM user WHERE email = '$email'";
-    
-                    if ($result = mysqli_query($db, $query)) {
-                        if (mysqli_num_rows($result) == 1) {
-                            $okay = false;
-                            $emailErr = "* Email address is already in use."."<br>";
-                            
-                        }
-                    }
-                    else {
-                        echo 'Error: '.mysqli_error($db);
-                    }
-                }
-            
-            //password validation
-            if (strlen($password) < 8 || !$number || !$upperCase || !$lowerCase || !$specialChars) {
-                        $passwordErr = "* Password must be at least 8 characters in length and must contain at least one number, one upper case letter, one lower case letter and one special character.". "<br>";
-                        $okay = false;
-            }
+        }
+
+        // Password validation
+        if (strlen($rawPassword) < 8 || !preg_match('@[0-9]@', $rawPassword) || !preg_match('@[A-Z]@', $rawPassword) || !preg_match('@[a-z]@', $rawPassword) || !preg_match('@[^\w]@', $rawPassword)) {
+            $passwordErr = "* Password must be at least 8 characters in length and must contain at least one number, one upper case letter, one lower case letter, and one special character." . "<br>";
+            $okay = false;
+        }
 
         if ($okay) {
+            // Hash the password
+            $password = password_hash($rawPassword, PASSWORD_BCRYPT);
+
+            // Insert user data into the database
             $query = "INSERT INTO user (cust_id, username, email, password, gender, dob, address, registration_date)
                 VALUES (0,'$username', '$email', '$password','$gender', '$dob', '$address', CURDATE())";
-                
+
             if (mysqli_query($db, $query)) {
+                // Retrieve user data for the session
                 $query = "SELECT * FROM user WHERE email = '$email'";
-                
-                if ($r = mysqli_query($db, $query)) {
-                    $row = mysqli_fetch_array($r);
+                $result = mysqli_query($db, $query);
+
+                if ($result) {
+                    $row = mysqli_fetch_array($result);
                     $_SESSION['cust_id'] = $row['cust_id'];
                 } else {
                     echo mysqli_error($db);
@@ -407,7 +401,6 @@
                 echo 'Error: ' . mysqli_error($db);
             }
         }
-  
     }
 
     $signinemailErr = $signinpasswordErr = "";
