@@ -519,6 +519,9 @@
                     }
                 } else {
                     echo json_encode(['images' => []]); // Add some debug information here.
+                    echo "<script>
+                                window.location.href='fittingroom404.php';
+                            </script>";
                 }
 
             ?>
