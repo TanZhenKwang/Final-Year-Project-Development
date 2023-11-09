@@ -421,7 +421,7 @@
             <?php
                     include 'connect.php';
                                     
-                    $result = mysqli_query($db, "SELECT product_id, product_image, product_title, product_brand, product_desc, product_price FROM products") or die("Query is incorrect.....");
+                    $result = mysqli_query($db, "SELECT product_id, product_image, product_title, product_brand, product_desc, product_price FROM products ORDER BY product_id DESC LIMIT 4") or die("Query is incorrect.....");
                     if(mysqli_num_rows($result) > 0){
 
                         while($row = mysqli_fetch_array($result)){
@@ -519,9 +519,6 @@
                     }
                 } else {
                     echo json_encode(['images' => []]); // Add some debug information here.
-                    echo "<script>
-                                window.location.href='fittingroom404.php';
-                            </script>";
                 }
 
             ?>

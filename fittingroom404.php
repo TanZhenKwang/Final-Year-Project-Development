@@ -61,8 +61,7 @@
 				<div class="col-sm-12 ">
 					<div class="col-sm-10 col-sm-offset-1  text-center">
 						<div class="four_zero_four_bg">
-							<h1 class="text-center ">Model not found</h1>
-
+							<h1 class="text-center ">Model not found / Some bug fixing</h1>
 
 						</div>
 
@@ -71,7 +70,7 @@
                             It appears the designer is searching for a model.
 							</h3>
 
-							<p>Sorry, the fitting weight you are looking for is currently unavailable.</p>
+							<p>Sorry, the fitting you are looking for is currently unavailable.</p>
 
 							<a href="./index.php" class="link_404">Go to Home</a>
 						</div>
